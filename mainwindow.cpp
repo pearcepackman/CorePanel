@@ -84,24 +84,65 @@ MainWindow::MainWindow(QWidget *parent)
 //--------------------------------- CPU USAGE LAYOUT ---------------------------------//
 //--------------------------------- CPU TEMP LAYOUT ---------------------------------//
     QLineSeries *cpuTemp = new QLineSeries();
-    cpuTemp->append(0,50);
-    cpuTemp->append(1,46);
-    cpuTemp->append(2,58);
-    cpuTemp->append(3,60);
+    cpuTemp->append(0, 38.2);
+    cpuTemp->append(1, 40.1);
+    cpuTemp->append(2, 42.5);
+    cpuTemp->append(3, 43.0);
+    cpuTemp->append(4, 45.3);
+    cpuTemp->append(5, 46.7);
+    cpuTemp->append(6, 47.2);
+    cpuTemp->append(7, 48.9);
+    cpuTemp->append(8, 49.6);
+    cpuTemp->append(9, 50.1);
+    cpuTemp->append(10, 51.8);
+    cpuTemp->append(11, 52.4);
+    cpuTemp->append(12, 53.6);
+    cpuTemp->append(13, 54.2);
+    cpuTemp->append(14, 55.1);
+    cpuTemp->append(15, 56.5);
+    cpuTemp->append(16, 57.0);
+    cpuTemp->append(17, 58.3);
+    cpuTemp->append(18, 58.9);
+    cpuTemp->append(19, 59.4);
+
+    QLineSeries *cpuTempBaseline = new QLineSeries();
+    for (int i = 0; i <= 19; ++i) {
+        cpuTempBaseline->append(i, 0);
+    }
+
+    QAreaSeries *cpuTempAreaSeries = new QAreaSeries(cpuTemp, cpuTempBaseline);
+    cpuTempAreaSeries->setBrush(QColor(100, 200, 255, 100));  // translucent fill
+    cpuTempAreaSeries->setPen(QPen(Qt::blue));
+
+
 
     QChart *cpuTempChart = new QChart();
-    cpuTempChart->addSeries(cpuTemp);
+    cpuTempChart->addSeries(cpuTempAreaSeries);
     cpuTempChart->createDefaultAxes();
     cpuTempChart->legend()->hide();
+    cpuTempChart->setMargins(QMargins(0, 0, 0, 0));
+
+    QValueAxis *cpuTempAxisY = qobject_cast<QValueAxis *>(cpuTempChart->axisY());
+    if (cpuTempAxisY) {
+        cpuTempAxisY->setRange(0, 100);
+        cpuTempAxisY->setLabelFormat("%dC");
+    }
+
+    // ✨ Transparency settings
+    cpuTempChart->setBackgroundVisible(false);
+    cpuTempChart->setBackgroundBrush(Qt::NoBrush);
+    cpuTempChart->setPlotAreaBackgroundVisible(false);
 
     QChartView *cpuTempChartView = new QChartView(cpuTempChart);
     cpuTempChartView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     cpuTempChartView->setRenderHint(QPainter::Antialiasing);
 
-    QVBoxLayout *cpuTempLayout = new QVBoxLayout(ui->cpuTemp_2);
+
+    QVBoxLayout *cpuTempLayout = new QVBoxLayout(ui->cpuTempChart);
     cpuTempLayout->addWidget(cpuTempChartView);
     cpuTempLayout->setContentsMargins(0, 0, 0, 0);
     cpuTempLayout->setSpacing(0);
+
 
 
 
