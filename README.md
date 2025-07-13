@@ -1,0 +1,13 @@
+# CorePanel
+Hello! My name is Pearce, and CorePanel is a project I've been working on to accurately display usage and temperatures of various hardware components in your computer! More will be coming soon, here's a list of updates and the development process.
+
+**Tech Stack:**
+- C++
+- Qt (C++ based for UI)
+
+**Update History:**
+- 7/12/2025 - GPU panel started in Qt, styling changes
+- 7/11/2025 - Qt styling, created CPU section
+- 7/10/2025 - Qt learning, widget vs layout issues, so frustrating lol
+- 7/1/2025 - Qt layout design, planning directory in project/repo
+- 6/30/2025 - Init repo with Qt, Qt testing with various buttons + fun stuff!
