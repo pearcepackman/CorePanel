@@ -3,9 +3,14 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QValueAxis>
-
 #include <QPen>
 #include <QBrush>
+#include <QCoreApplication>
+#include <QDir>
+#include <QProcess>
+#include <QDebug>
+#include <QTimer>
+#include <QStandardPaths>
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
@@ -15,6 +20,37 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, [=]() {
+        QString exePath = QCoreApplication::applicationDirPath() + "/HardwareReader/HardwareReader.exe";
+
+        QProcess process;
+        process.start(exePath);
+        if (!process.waitForFinished()) {
+            qDebug() << "Process failed or timed out";
+            return;
+        }
+
+        // Read from temp file
+        QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/corepanel_metrics.txt";
+        QFile file(tempPath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            while (!in.atEnd()) {
+                QString line = in.readLine();
+                qDebug() << "Metric:" << line;
+            }
+            file.close();
+        } else {
+            qDebug() << "Failed to open metrics file:" << tempPath;
+        }
+    });
+    timer->start(1000);  // Every second
+
+
+
+
 //--------------------------------- CPU USAGE LAYOUT ---------------------------------//
 
     QLineSeries *series = new QLineSeries();

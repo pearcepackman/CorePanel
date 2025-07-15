@@ -1,5 +1,6 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
+using System.IO;
 
 public class UpdateVisitor : IVisitor
 {
@@ -18,6 +19,8 @@ public class Program
 {
     public static void Main()
     {
+        string tempPath = Path.Combine(Path.GetTempPath(), "corepanel_metrics.txt");
+        using StreamWriter writer = new StreamWriter(tempPath, false);
         float ramUsed = 0;
         float ramTotal = 0;
 
@@ -40,13 +43,17 @@ public class Program
                 if (sensor.Value == null || float.IsNaN(sensor.Value.Value)) continue;
 
                 // CPU Usage
-                if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total")
+                if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total") {
+                    writer.WriteLine($"CPU_USAGE={sensor.Value}");
                     Console.WriteLine($"CPU_USAGE={sensor.Value}");
+                }
 
                 // CPU Temp
                 if (sensor.SensorType == SensorType.Temperature && sensor.Name == "CPU Core Max")
+                {
+                    writer.WriteLine($"CPU_TEMP={sensor.Value}");
                     Console.WriteLine($"CPU_TEMP={sensor.Value}");
-
+                }
                 // RAM
                 if (sensor.Name == "Memory Used")
                     ramUsed = sensor.Value.Value;
@@ -55,16 +62,17 @@ public class Program
 
                 // GPU Temp (RX 7600)
                 if (hardware.Name.Contains("RX 7600") && sensor.Name == "GPU Hot Spot")
-                    Console.WriteLine($"GPU_TEMP={sensor.Value}");
+                    writer.WriteLine($"GPU_TEMP={sensor.Value}");
 
                 // GPU Usage
                 if (hardware.Name.Contains("RX 7600") && sensor.Name == "D3D 3D")
-                    Console.WriteLine($"GPU_USAGE={sensor.Value}");
+                    writer.WriteLine($"GPU_USAGE={sensor.Value}");
+
             }
         }
 
         if (ramTotal > 0)
-            Console.WriteLine($"RAM_USAGE={(ramUsed / ramTotal * 100):F2}");
+            writer.WriteLine($"RAM_USAGE={(ramUsed / ramTotal * 100):F2}");
 
         computer.Close();
     }
