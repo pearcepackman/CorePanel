@@ -1,0 +1,29 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio files
+.vscode/
+.vs/
+*.user
+*.suo
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+
+# Logs
+*.log
+
+# Others
+*.exe
+*.dll
+*.cache
+*.pdb
+*.db
+
+# OS-specific
+.DS_Store
+Thumbs.db
