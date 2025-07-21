@@ -13,6 +13,7 @@
 #include <QStandardPaths>
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+using namespace std;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,32 +22,60 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QTimer* timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, [=]() {
-        QString exePath = QCoreApplication::applicationDirPath() + "/HardwareReader/HardwareReader.exe";
+    // Executable path is just hardcoded right now, will update this
+    hardwareReaderProcess = new QProcess(this);
+    QString exePath = "C:/Users/table/Desktop/Programming/CorePanel/HardwareReader/bin/Release/net9.0/win-x64/HardwareReader.exe";
+    if (!QFile::exists(exePath)) {
+        qDebug() << "ERROR: Executable not found at" << exePath;
+    } else {
+        //Starts the HardwareMonitor for capturing hardware data
+        hardwareReaderProcess->setProgram(exePath);
+        hardwareReaderProcess->start();
+    }
 
-        QProcess process;
-        process.start(exePath);
-        if (!process.waitForFinished()) {
-            qDebug() << "Process failed or timed out";
-            return;
-        }
 
-        // Read from temp file
-        QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/corepanel_metrics.txt";
-        QFile file(tempPath);
-        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream in(&file);
-            while (!in.atEnd()) {
-                QString line = in.readLine();
+    // Connecting the process to readyRead for easy output
+    connect(hardwareReaderProcess, &QProcess::readyReadStandardOutput, this, [=]() {
+        QByteArray data = hardwareReaderProcess->readAllStandardOutput();
+        QStringList lines = QString(data).split('\n', Qt::SkipEmptyParts);
+        //Getting the lines of output from my C# program
+        for (const QString &rawline : lines) {
+            QString line = rawline.trimmed();
+            if (line.contains('=')) {
                 qDebug() << "Metric:" << line;
+
+                if (line.startsWith("CPU_USAGE=")) {
+                    QString val = line.section('=', 1);
+                    ui->cpuUsageOutput->setText(val + "%");
+                    // TODO: update chart here if needed
+                }
+                if (line.startsWith("CPU_TEMP=")) {
+                    QString val = line.section('=', 1);
+                    ui->cpuTempOutput->setText(val + "C");
+                }
+                //Working on this one, UI needs widget for this
+                /*if (line.startsWith("RAM_USAGE=")) {
+                    QString val = line.section('=', 1);
+                    ui->ramUsageOutput->setText(val + "%");
+                }
+*/
+                if (line.startsWith("GPU_USAGE=")) {
+                    QString val = line.section('=', 1);
+                    ui->gpuUsageOutput->setText(val + "%");
+                }
+                if (line.startsWith("GPU_TEMP=")) {
+                    QString val = line.section('=', 1);
+                    ui->gpuTempOutput->setText(val + "C");
+                }
             }
-            file.close();
-        } else {
-            qDebug() << "Failed to open metrics file:" << tempPath;
         }
     });
-    timer->start(1000);  // Every second
+
+
+
+
+
+
 
 
 
@@ -186,5 +215,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    if (hardwareReaderProcess && hardwareReaderProcess->state() != QProcess::NotRunning) {
+        hardwareReaderProcess->terminate(); // Send gentle close signal
+        if (!hardwareReaderProcess->waitForFinished(1000)) {
+            hardwareReaderProcess->kill(); // Force kill if still hanging
+            hardwareReaderProcess->waitForFinished();
+        }
+    }
+
     delete ui;
 }

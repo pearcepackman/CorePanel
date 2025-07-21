@@ -1,6 +1,9 @@
 # CorePanel Roadmap
 ## As of July 19, 2025
 
+**Progress**
+- 7/21/2025 - Should have been using HWiNFO, just realized the C# library can't read CPU temp :(
+
 **Frontend**
 - Usage + Temp graphs for main window
     - Reusable, parent graph class

@@ -7,6 +7,7 @@ Hello! My name is Pearce, and CorePanel is a project I've been working on to acc
 - .NET Libraries
 
 **Update History:**
+- 7/21/2025 - HardwareReader.exe CANNOT read CPU temp, going to have to move to HWiNFO :(. Did have usages working though!
 - 7/15/2025 - Creating HardwareReader.exe using .NET libraries, attempting to read data to Qt project
 - 7/13/2025 - Added README for update tracking and landing page, also progress screenshot
 - 7/12/2025 - GPU panel started in Qt, styling changes

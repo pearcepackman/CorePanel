@@ -1,6 +1,7 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
 using System.IO;
+using System.Threading;
 
 public class UpdateVisitor : IVisitor
 {
@@ -18,62 +19,81 @@ public class UpdateVisitor : IVisitor
 public class Program
 {
     public static void Main()
+{
+    var computer = new Computer
     {
-        string tempPath = Path.Combine(Path.GetTempPath(), "corepanel_metrics.txt");
-        using StreamWriter writer = new StreamWriter(tempPath, false);
+        IsCpuEnabled = true,
+        IsGpuEnabled = true,
+        IsMemoryEnabled = true
+    };
+
+    computer.Open();
+        Thread.Sleep(300);
+    var visitor = new UpdateVisitor();
+
+    while (true)
+    {
         float ramUsed = 0;
         float ramTotal = 0;
 
-        var computer = new Computer
-        {
-            IsCpuEnabled = true,
-            IsGpuEnabled = true,
-            IsMemoryEnabled = true
-        };
 
-        computer.Open();
-        computer.Accept(new UpdateVisitor());
+
+        // Second pass to get updated values
+            computer.Accept(visitor);
+            Thread.Sleep(150);
 
         foreach (IHardware hardware in computer.Hardware)
-        {
-            hardware.Update();
-
-            foreach (ISensor sensor in hardware.Sensors)
             {
-                if (sensor.Value == null || float.IsNaN(sensor.Value.Value)) continue;
+                hardware.Update();
+                Thread.Sleep(50);
 
-                // CPU Usage
-                if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total") {
-                    writer.WriteLine($"CPU_USAGE={sensor.Value}");
-                    Console.WriteLine($"CPU_USAGE={sensor.Value}");
-                }
-
-                // CPU Temp
-                if (sensor.SensorType == SensorType.Temperature && sensor.Name == "CPU Core Max")
+                foreach (ISensor sensor in hardware.Sensors)
                 {
-                    writer.WriteLine($"CPU_TEMP={sensor.Value}");
-                    Console.WriteLine($"CPU_TEMP={sensor.Value}");
+                    if (sensor.Value == null || float.IsNaN(sensor.Value.Value)) continue;
+
+                    if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total")
+                    {
+                        if (sensor.Value.HasValue)
+                        {
+                            float roundedCpu = (float)Math.Round(sensor.Value.Value, 1);
+                            Console.WriteLine($"CPU_USAGE={roundedCpu}");
+                        }
+                    }
+
+
+                    if (sensor.SensorType == SensorType.Temperature &&
+                        (sensor.Name.Contains("CPU") || sensor.Name.Contains("Tctl/Tdie")))
+                    {
+                        if (sensor.Value != null && !float.IsNaN(sensor.Value.Value) && sensor.Value.Value > 1.0f) {
+                            Console.WriteLine($"CPU_TEMP={sensor.Value.Value:F1}");
+                        } else {
+                            Console.WriteLine("CPU_TEMP=N/A");
+                        }
+                    }
+
+
+
+                    if (sensor.Name == "Memory Used") ramUsed = sensor.Value.Value;
+                    if (sensor.Name == "Memory") ramTotal = sensor.Value.Value;
+
+                    if (hardware.Name.Contains("RX 7600") && sensor.Name == "GPU Hot Spot")
+                        Console.WriteLine($"GPU_TEMP={sensor.Value}");
+
+                    if (hardware.Name.Contains("RX 7600") && sensor.Name == "D3D 3D")
+                        Console.WriteLine($"GPU_USAGE={sensor.Value}");
                 }
-                // RAM
-                if (sensor.Name == "Memory Used")
-                    ramUsed = sensor.Value.Value;
-                if (sensor.Name == "Memory")
-                    ramTotal = sensor.Value.Value;
-
-                // GPU Temp (RX 7600)
-                if (hardware.Name.Contains("RX 7600") && sensor.Name == "GPU Hot Spot")
-                    writer.WriteLine($"GPU_TEMP={sensor.Value}");
-
-                // GPU Usage
-                if (hardware.Name.Contains("RX 7600") && sensor.Name == "D3D 3D")
-                    writer.WriteLine($"GPU_USAGE={sensor.Value}");
-
             }
-        }
 
         if (ramTotal > 0)
-            writer.WriteLine($"RAM_USAGE={(ramUsed / ramTotal * 100):F2}");
+            Console.WriteLine($"RAM_USAGE={(ramUsed / ramTotal * 100):F2}");
 
-        computer.Close();
+        Console.WriteLine("END_FRAME"); // used to delimit between readings
+
+        Thread.Sleep(1000); // delay before next reading
     }
+
+    // no close, runs forever
+}
+
+
 }

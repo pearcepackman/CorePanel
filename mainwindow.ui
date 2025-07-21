@@ -166,7 +166,7 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLabel" name="label_5">
+                      <widget class="QLabel" name="cpuUsageOutput">
                        <property name="font">
                         <font>
                          <pointsize>14</pointsize>
@@ -313,7 +313,7 @@
                       </widget>
                      </item>
                      <item alignment="Qt::AlignmentFlag::AlignLeft">
-                      <widget class="QLabel" name="label_7">
+                      <widget class="QLabel" name="cpuTempOutput">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
@@ -491,7 +491,7 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLabel" name="label_8">
+                      <widget class="QLabel" name="gpuUsageOutput">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -542,7 +542,7 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLabel" name="label">
+                      <widget class="QLabel" name="gpuTempOutput">
                        <property name="text">
                         <string>58 C</string>
                        </property>
