@@ -31,6 +31,7 @@
             - This may be a few hours
 
 **Issues**
+- File structure
 - C# .NET Program reading when called by itself but not reading when called from Qt app???
 - Qt and it's stupid widgets I am so frustrated with them
 - Qt in general
