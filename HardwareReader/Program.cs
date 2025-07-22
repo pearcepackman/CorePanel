@@ -1,6 +1,5 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.IO;
 using System.Threading;
 
 public class UpdateVisitor : IVisitor
@@ -19,81 +18,79 @@ public class UpdateVisitor : IVisitor
 public class Program
 {
     public static void Main()
-{
-    var computer = new Computer
     {
-        IsCpuEnabled = true,
-        IsGpuEnabled = true,
-        IsMemoryEnabled = true
-    };
-
-    computer.Open();
+        var computer = new Computer
+        {
+            IsCpuEnabled = true,
+            IsGpuEnabled = true,
+            IsMemoryEnabled = true
+        };
+        computer.Open();
         Thread.Sleep(300);
-    var visitor = new UpdateVisitor();
+        var visitor = new UpdateVisitor();
 
-    while (true)
-    {
-        float ramUsed = 0;
-        float ramTotal = 0;
+        while (true)
+        {
+            float ramUsed = 0, ramTotal = 0;
 
-
-
-        // Second pass to get updated values
             computer.Accept(visitor);
             Thread.Sleep(150);
 
-        foreach (IHardware hardware in computer.Hardware)
+            foreach (IHardware hardware in computer.Hardware)
+{
+    hardware.Update();
+    Thread.Sleep(50);
+
+    // Check CPU sensors
+    if (hardware.HardwareType == HardwareType.Cpu)
+    {
+        foreach (ISensor sensor in hardware.Sensors)
+        {
+            if (sensor.Value == null || float.IsNaN(sensor.Value.Value)) continue;
+
+            if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total")
+                Console.WriteLine($"CPU_USAGE={Math.Round(sensor.Value.Value, 1)}");
+
+            if (sensor.SensorType == SensorType.Temperature &&
+                (sensor.Name.Contains("CPU") || sensor.Name.Contains("Tctl/Tdie")))
             {
-                hardware.Update();
-                Thread.Sleep(50);
-
-                foreach (ISensor sensor in hardware.Sensors)
-                {
-                    if (sensor.Value == null || float.IsNaN(sensor.Value.Value)) continue;
-
-                    if (sensor.SensorType == SensorType.Load && sensor.Name == "CPU Total")
-                    {
-                        if (sensor.Value.HasValue)
-                        {
-                            float roundedCpu = (float)Math.Round(sensor.Value.Value, 1);
-                            Console.WriteLine($"CPU_USAGE={roundedCpu}");
-                        }
-                    }
-
-
-                    if (sensor.SensorType == SensorType.Temperature &&
-                        (sensor.Name.Contains("CPU") || sensor.Name.Contains("Tctl/Tdie")))
-                    {
-                        if (sensor.Value != null && !float.IsNaN(sensor.Value.Value) && sensor.Value.Value > 1.0f) {
-                            Console.WriteLine($"CPU_TEMP={sensor.Value.Value:F1}");
-                        } else {
-                            Console.WriteLine("CPU_TEMP=N/A");
-                        }
-                    }
-
-
-
-                    if (sensor.Name == "Memory Used") ramUsed = sensor.Value.Value;
-                    if (sensor.Name == "Memory") ramTotal = sensor.Value.Value;
-
-                    if (hardware.Name.Contains("RX 7600") && sensor.Name == "GPU Hot Spot")
-                        Console.WriteLine($"GPU_TEMP={sensor.Value}");
-
-                    if (hardware.Name.Contains("RX 7600") && sensor.Name == "D3D 3D")
-                        Console.WriteLine($"GPU_USAGE={sensor.Value}");
-                }
+                if (sensor.Value.Value > 1.0f)
+                    Console.WriteLine($"CPU_TEMP={sensor.Value.Value:F1}");
+                else
+                    Console.WriteLine("CPU_TEMP=N/A");
             }
-
-        if (ramTotal > 0)
-            Console.WriteLine($"RAM_USAGE={(ramUsed / ramTotal * 100):F2}");
-
-        Console.WriteLine("END_FRAME"); // used to delimit between readings
-
-        Thread.Sleep(1000); // delay before next reading
+        }
     }
+    // Check GPU sensors
+    else if (hardware.HardwareType == HardwareType.GpuNvidia || hardware.HardwareType == HardwareType.GpuAmd || hardware.HardwareType == HardwareType.GpuIntel)
+    {
+        foreach (ISensor sensor in hardware.Sensors)
+        {
+            if (sensor.Value == null || float.IsNaN(sensor.Value.Value)) continue;
 
-    // no close, runs forever
+            if (sensor.SensorType == SensorType.Temperature && sensor.Name.ToLower().Contains("hot spot"))
+                Console.WriteLine($"GPU_TEMP={sensor.Value.Value:F1}");
+
+            if (sensor.SensorType == SensorType.Load && sensor.Name.ToLower().Contains("3d"))
+                Console.WriteLine($"GPU_USAGE={sensor.Value.Value:F1}");
+        }
+    }
+    // RAM sensors
+    foreach (ISensor sensor in hardware.Sensors)
+    {
+        if (sensor.Name == "Memory Used")
+            ramUsed = sensor.Value.Value;
+        if (sensor.Name == "Memory")
+            ramTotal = sensor.Value.Value;
+    }
 }
 
 
+            if (ramTotal > 0)
+                Console.WriteLine($"RAM_USAGE={(ramUsed / ramTotal * 100):F2}");
+
+            Console.WriteLine("END_FRAME");
+            Thread.Sleep(1000);
+        }
+    }
 }

@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Executable path is just hardcoded right now, will update this
     hardwareReaderProcess = new QProcess(this);
-    QString exePath = "C:/Users/table/Desktop/Programming/CorePanel/HardwareReader/bin/Release/net9.0/win-x64/HardwareReader.exe";
+    QString exePath = "C:/Users/table/Desktop/Programming/CorePanel/HardwareReader/bin/Release/net9.0/win-x64/publish/HardwareReader.exe";
     if (!QFile::exists(exePath)) {
         qDebug() << "ERROR: Executable not found at" << exePath;
     } else {
