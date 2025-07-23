@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "chartWidget.h"
 #include <QMainWindow>
 #include <QProcess>
 
@@ -21,5 +22,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QProcess* hardwareReaderProcess = nullptr;
+    chartWidget *cpuUsageChartWidget;
+    chartWidget *cpuTempChartWidget;
 };
 #endif // MAINWINDOW_H

@@ -7,6 +7,7 @@ Hello! My name is Pearce, and CorePanel is a project I've been working on to acc
 - .NET Libraries
 
 **Update History:**
+- 7/23/2025 - Pulling in data in graphs now!!!! Super stoked, made graph class as well
 - 7/22/2025 - HardwareReader.exe CAN read CPU temp! Needed admin permission to launch app :)
 - 7/21/2025 - HardwareReader.exe CANNOT read CPU temp, going to have to move to HWiNFO :(. Did have usages working though!
 - 7/15/2025 - Creating HardwareReader.exe using .NET libraries, attempting to read data to Qt project
