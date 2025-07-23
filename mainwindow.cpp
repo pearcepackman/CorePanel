@@ -63,12 +63,14 @@ MainWindow::MainWindow(QWidget *parent)
                 }
 */
                 if (line.startsWith("GPU_USAGE=")) {
-                    QString val = line.section('=', 1);
-                    ui->gpuUsageOutput->setText(val + "%");
+                    float val = line.section('=', 1).toFloat();
+                    ui->gpuUsageOutput->setText(QString::number(val, 'f', 1) + "%");
+                    gpuUsageChartWidget->addDataPoint(val);
                 }
                 if (line.startsWith("GPU_TEMP=")) {
-                    QString val = line.section('=', 1);
-                    ui->gpuTempOutput->setText(val + "C");
+                    float val = line.section('=', 1).toFloat();
+                    ui->gpuTempOutput->setText(QString::number(val, 'f', 1) + "C");
+                    gpuTempChartWidget->addDataPoint(val);
                 }
             }
         }
@@ -91,7 +93,6 @@ MainWindow::MainWindow(QWidget *parent)
     cpuLayout->setContentsMargins(0,0,0,0);
     cpuLayout->setSpacing(0);
 
-
 //--------------------------------- CPU USAGE LAYOUT ---------------------------------//
 //--------------------------------- CPU TEMP LAYOUT ---------------------------------//
 
@@ -101,6 +102,24 @@ MainWindow::MainWindow(QWidget *parent)
     cpuTempLayout->setContentsMargins(0,0,0,0);
     cpuTempLayout->setSpacing(0);
 
+//--------------------------------- CPU TEMP LAYOUT ---------------------------------//
+//--------------------------------- GPU TEMP LAYOUT ---------------------------------//
+
+    gpuUsageChartWidget = new chartWidget(this, "%", 100);
+    QVBoxLayout *gpuUsageLayout = new QVBoxLayout(ui->gpuUsageChart);
+    gpuUsageLayout->addWidget(gpuUsageChartWidget);
+    gpuUsageLayout->setContentsMargins(0,0,0,0);
+    gpuUsageLayout->setSpacing(0);
+
+//--------------------------------- GPU TEMP LAYOUT ---------------------------------//
+
+    gpuTempChartWidget = new chartWidget(this, "C", 100);
+    QVBoxLayout *gpuTempLayout = new QVBoxLayout(ui->gpuTempChart);
+    gpuTempLayout->addWidget(gpuTempChartWidget);
+    gpuTempLayout->setContentsMargins(0,0,0,0);
+    gpuTempLayout->setSpacing(0);
+
+//--------------------------------- GPU TEMP LAYOUT ---------------------------------//
 
 
 

@@ -24,5 +24,7 @@ private:
     QProcess* hardwareReaderProcess = nullptr;
     chartWidget *cpuUsageChartWidget;
     chartWidget *cpuTempChartWidget;
+    chartWidget *gpuUsageChartWidget;
+    chartWidget *gpuTempChartWidget;
 };
 #endif // MAINWINDOW_H

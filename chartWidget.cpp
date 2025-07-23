@@ -1,5 +1,7 @@
 // ChartWidget.cpp
 #include "chartWidget.h"
+#include <QLabel>
+#include <QHBoxLayout>
 
 chartWidget::chartWidget(QWidget *parent, const QString &unit, int yMax)
     : QWidget(parent), xIndex(0)
@@ -23,14 +25,35 @@ chartWidget::chartWidget(QWidget *parent, const QString &unit, int yMax)
     axisX = qobject_cast<QValueAxis *>(chart->axisX());
     axisY = qobject_cast<QValueAxis *>(chart->axisY());
 
-    if (axisY) {
-        if (unit == "°C") {
-            axisY->setRange(30, yMax); //  start at 30 for temp charts
-        } else {
-            axisY->setRange(0, yMax);  // default for usage (%)
-        }
-        axisY->setLabelFormat(QString("%%1%1").arg(unit));
+    if (axisX) {
+        axisX->setLabelsVisible(false);     // hides numbers
+        axisX->setTickCount(0);             // hides ticks
+        axisX->setLineVisible(false);       // hides axis line
     }
+
+    if (axisY) {
+        if (unit == "C") {
+            // Temp chart: hide everything
+            axisY->setRange(30, 105);
+            axisY->setLabelsVisible(true);
+            axisY->setTickCount(5);
+            axisY->setLineVisible(false);
+            axisY->setGridLineVisible(true);
+            axisY->setLabelFormat("%d");
+        } else {
+            // Usage chart: show labeled ticks
+            axisY->setRange(0, yMax);
+            axisY->setTickCount(5);
+            axisY->setLabelsVisible(true);
+
+            if (unit == "%") {
+                axisY->setLabelFormat("%d%%");
+            } else {
+                axisY->setLabelFormat("%d");
+            }
+        }
+    }
+
 
 
     chartView = new QChartView(chart);
@@ -42,6 +65,8 @@ chartWidget::chartWidget(QWidget *parent, const QString &unit, int yMax)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     setLayout(layout);
+
+
 }
 
 void chartWidget::addDataPoint(float value)
