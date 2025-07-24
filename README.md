@@ -21,9 +21,10 @@ This project is a combination of a Qt based UI with a C# backend to read data.
 
 ## Demos and Screenshots:
 - Demo Gif from 7/24/2025 - All core features created
-![CorePanel Demo](assets/demogif.gif)
+<img src="assets/demogif.gif" alt="Demo" width="500"/>
 - Screenshot from 7/13/2025 - CPU graphs created, placeholders
-![Screenshot](assets/screenshot_0.png)
+<img src="assets/screenshot_0.png" alt="screenshot" width="500"/>
+
 
 ## Notes:
 - Requires Windows and will prompt for admin access (needed for temperature readings)
