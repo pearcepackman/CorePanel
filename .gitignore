@@ -1,27 +1,12 @@
-# Ignore CMake build folders
-build/
-build-*/
-
-# Ignore generated files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-
-# Ignore Qt Creator files
-*.user
-*.user.*
-*.autosave
-
-# Ignore object files and executables
-*.o
-*.obj
+/build/
+/release/
+/*.user
 *.exe
+*.obj
 *.dll
-*.so
-*.dylib
-
-# Ignore Qt MOC, UIC, RCC generated files (if not using AUTOUIC/AUTOMOC)
-moc_*.cpp
-ui_*.h
-qrc_*.cpp
+*.pdb
+*.log
+*.cache
+*.vs
+.DS_Store
+Thumbs.db

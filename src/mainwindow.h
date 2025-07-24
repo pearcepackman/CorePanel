@@ -26,5 +26,7 @@ private:
     chartWidget *cpuTempChartWidget;
     chartWidget *gpuUsageChartWidget;
     chartWidget *gpuTempChartWidget;
+    chartWidget *diskUsageChartWidget;
+    chartWidget *ramUsageChartWidget;
 };
 #endif // MAINWINDOW_H

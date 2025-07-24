@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Executable path is just hardcoded right now, will update this
     hardwareReaderProcess = new QProcess(this);
-    QString exePath = "C:/Users/table/Desktop/Programming/CorePanel/HardwareReader/bin/Release/net9.0/win-x64/publish/HardwareReader.exe";
+    QString exePath = QCoreApplication::applicationDirPath() + "/HardwareReader.exe";
     if (!QFile::exists(exePath)) {
         qDebug() << "ERROR: Executable not found at" << exePath;
     } else {
@@ -56,12 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
                     ui->cpuTempOutput->setText(QString::number(val, 'f', 1) + "C");
                     cpuTempChartWidget->addDataPoint(val);
                 }
-                //Working on this one, UI needs widget for this
-                /*if (line.startsWith("RAM_USAGE=")) {
-                    QString val = line.section('=', 1);
-                    ui->ramUsageOutput->setText(val + "%");
-                }
-*/
+
                 if (line.startsWith("GPU_USAGE=")) {
                     float val = line.section('=', 1).toFloat();
                     ui->gpuUsageOutput->setText(QString::number(val, 'f', 1) + "%");
@@ -72,6 +67,17 @@ MainWindow::MainWindow(QWidget *parent)
                     ui->gpuTempOutput->setText(QString::number(val, 'f', 1) + "C");
                     gpuTempChartWidget->addDataPoint(val);
                 }
+                if (line.startsWith("DISK_USAGE=")) {
+                    float val = line.section('=', 1).toFloat();
+                    ui->diskUsageOutput->setText(QString::number(val, 'f', 1) + "%");
+                    diskUsageChartWidget->addDataPoint(val);
+                }
+                if (line.startsWith("RAM_USAGE=")) {
+                    float val = line.section('=', 1).toFloat();
+                    ui->ramUsageOutput->setText(QString::number(val, 'f', 1) + "%");
+                    ramUsageChartWidget->addDataPoint(val);
+                }
+
             }
         }
     });
@@ -94,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
     cpuLayout->setSpacing(0);
 
 //--------------------------------- CPU USAGE LAYOUT ---------------------------------//
+
 //--------------------------------- CPU TEMP LAYOUT ---------------------------------//
 
     cpuTempChartWidget = new chartWidget(this, "C", 100);
@@ -103,13 +110,16 @@ MainWindow::MainWindow(QWidget *parent)
     cpuTempLayout->setSpacing(0);
 
 //--------------------------------- CPU TEMP LAYOUT ---------------------------------//
-//--------------------------------- GPU TEMP LAYOUT ---------------------------------//
+
+//--------------------------------- GPU USAGE LAYOUT ---------------------------------//
 
     gpuUsageChartWidget = new chartWidget(this, "%", 100);
     QVBoxLayout *gpuUsageLayout = new QVBoxLayout(ui->gpuUsageChart);
     gpuUsageLayout->addWidget(gpuUsageChartWidget);
     gpuUsageLayout->setContentsMargins(0,0,0,0);
     gpuUsageLayout->setSpacing(0);
+
+//--------------------------------- GPU USAGE LAYOUT ---------------------------------//
 
 //--------------------------------- GPU TEMP LAYOUT ---------------------------------//
 
@@ -120,6 +130,27 @@ MainWindow::MainWindow(QWidget *parent)
     gpuTempLayout->setSpacing(0);
 
 //--------------------------------- GPU TEMP LAYOUT ---------------------------------//
+
+//--------------------------------- DISK USAGE LAYOUT ---------------------------------//
+
+    diskUsageChartWidget = new chartWidget(this, "%", 100);
+    QVBoxLayout *diskUsageLayout = new QVBoxLayout(ui->diskUsageChart);
+    diskUsageLayout->addWidget(diskUsageChartWidget);
+    diskUsageLayout->setContentsMargins(0,0,0,0);
+    diskUsageLayout->setSpacing(0);
+
+//--------------------------------- DISK USAGE LAYOUT ---------------------------------//
+
+//--------------------------------- RAM USAGE LAYOUT ---------------------------------//
+
+    ramUsageChartWidget = new chartWidget(this, "%", 100);
+    QVBoxLayout *ramUsageLayout = new QVBoxLayout(ui->ramUsageChart);
+    ramUsageLayout->addWidget(ramUsageChartWidget);
+    ramUsageLayout->setContentsMargins(0,0,0,0);
+    ramUsageLayout->setSpacing(0);
+
+//--------------------------------- RAM USAGE LAYOUT ---------------------------------//
+
 
 
 

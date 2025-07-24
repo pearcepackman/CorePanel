@@ -778,7 +778,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="cpuWidget_2" native="true">
+     <widget class="QWidget" name="ramDiskWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -813,26 +813,46 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="label_10">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="text">
-            <string>CPU</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item alignment="Qt::AlignmentFlag::AlignLeft">
+            <widget class="QLabel" name="label_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>RAM</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>DISK</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -920,7 +940,7 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="cpuUsageOutput_2">
+                    <widget class="QLabel" name="ramUsageOutput">
                      <property name="font">
                       <font>
                        <pointsize>14</pointsize>
@@ -928,7 +948,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>45%</string>
+                      <string>0</string>
                      </property>
                     </widget>
                    </item>
@@ -960,7 +980,7 @@
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QWidget" name="cpuUsageChart_2" native="true">
+                    <widget class="QWidget" name="ramUsageChart" native="true">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
@@ -1062,12 +1082,12 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>Temperature:</string>
+                      <string>Usage:</string>
                      </property>
                     </widget>
                    </item>
                    <item alignment="Qt::AlignmentFlag::AlignLeft">
-                    <widget class="QLabel" name="cpuTempOutput_2">
+                    <widget class="QLabel" name="diskUsageOutput">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -1081,7 +1101,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>56 C</string>
+                      <string>0</string>
                      </property>
                     </widget>
                    </item>
@@ -1113,7 +1133,7 @@
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QWidget" name="cpuTempChart_2" native="true">
+                    <widget class="QWidget" name="diskUsageChart" native="true">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
