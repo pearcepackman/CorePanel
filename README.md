@@ -28,6 +28,7 @@ This project is a combination of a Qt based UI with a C# backend to read data.
 ## Notes:
 - Requires Windows and will prompt for admin access (needed for temperature readings)
 - Built on Windows 11 with AMD CPU and AMD graphics card
+- CorePanel relies on LibreHardwareMonitor to retrieve system metrics. This is an excellent open source library, but sensor data could vary and may not match exactly to the actual values observed
 
 **Update History:**
 - 7/24/2025 - FIRST RELEASE! Working in standalone folder! All charts added! :)
