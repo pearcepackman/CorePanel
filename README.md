@@ -1,3 +1,5 @@
+![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white)
+![Qt](https://img.shields.io/badge/Qt-41CD52?style=flat&logo=qt&logoColor=white)
 # CorePanel
 Hello! I'm Pearce, and CorePanel is a C++/Qt desktop app that displays real-time usage and temperatures for your CPU, GPU, RAM, and storage device!
 
