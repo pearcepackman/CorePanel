@@ -1,17 +1,25 @@
-![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white)
-![Qt](https://img.shields.io/badge/Qt-41CD52?style=flat&logo=qt&logoColor=white)
+<p align="left">
+  <img src="https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white" />
+  <img src="https://img.shields.io/badge/Qt-41CD52?style=flat&logo=qt&logoColor=white" />
+  <img src="https://img.shields.io/badge/C%23-68217A?style=flat&logo=c-sharp&logoColor=white" />
+  <img src="https://img.shields.io/badge/.NET-512BD4?style=flat&logo=dotnet&logoColor=white" />
+  <img src="https://img.shields.io/badge/LibreHardwareMonitor-222222?style=flat&logo=github&logoColor=white" />
+  <img src="https://img.shields.io/badge/Windows_11-0078D6?style=flat&logo=windows&logoColor=white" />
+  <img src="https://img.shields.io/badge/Real--Time_Graphing-FB8C00?style=flat" />
+</p>
+
 # CorePanel
 Hello! I'm Pearce, and CorePanel is a C++/Qt desktop app that displays real-time usage and temperatures for your CPU, GPU, RAM, and storage device!
 
 This project is a combination of a Qt based UI with a C# backend to read data.
 
-## Tech Stack:
+## Tech Stack
 - **C++** - Real time graphing and data display, all logic
 - **Qt** - UI application (Q Packages like QMainWindow, QChart, layouts, widgets, etc.)
 - **C#** - HardwareReader backend utilizing LibreHardwareMonitor (.NET 9.0)
 - **LibreHardwareMonitor** - Access to sensors, temps, and usage
 
-## Features:
+## Features
 - Real-time charts for:
     - CPU usage and temperature
     - GPU usage and temperature
@@ -21,19 +29,20 @@ This project is a combination of a Qt based UI with a C# backend to read data.
 - Portable folder for easy deployment
 
 
-## Demos and Screenshots:
-- Demo Gif from 7/24/2025 - All core features created
-<img src="assets/demogif.gif" alt="Demo" width="500"/>
-- Screenshot from 7/13/2025 - CPU graphs created, placeholders
-<img src="assets/screenshot_0.png" alt="screenshot" width="500"/>
+## Demos and Screenshots
+<p align='center'>
+- Demo Gif from 7/24/2025 - All core features created<br>
+<img src="assets/demogif.gif" alt="Demo" width="500"/><br><br>
+- Screenshot from 7/13/2025 - CPU graphs created, placeholders<br>
+<img src="assets/screenshot_0.png" alt="screenshot" width="500"/><br>
+</p>
 
-
-## Notes:
+## Notes
 - Requires Windows and will prompt for admin access (needed for temperature readings)
 - Built on Windows 11 with AMD CPU and AMD graphics card
 - CorePanel relies on LibreHardwareMonitor to retrieve system metrics. This is an excellent open source library, but sensor data could vary and may not match exactly to the actual values observed
 
-**Update History:**
+**Update History**
 - 7/24/2025 - FIRST RELEASE! Working in standalone folder! All charts added! :)
 - 7/23/2025 - Pulling in data in graphs now, CPU and GPU!!!! Super stoked, made graph class as well
 - 7/22/2025 - HardwareReader.exe CAN read CPU temp! Needed admin permission to launch app :)
