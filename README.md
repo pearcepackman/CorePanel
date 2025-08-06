@@ -46,9 +46,9 @@ This project is a combination of a Qt based UI with a C# backend to read data.
 - 7/1/2025 - Qt layout design, planning directory in project/repo
 - 6/30/2025 - Init repo with Qt, Qt testing with various buttons + fun stuff!
 
-## Contact:
-If you like this project and want to chat with me, here's some of my links! :)
+## Contact
 <p align="center">
+  If you like this project and want to chat with me, here's some of my links! :)<br><br>
   <a href="https://pearcepackman.com/" target="_blank">🌐 Portfolio Website</a> |
   <a href="https://www.linkedin.com/in/pearce-packman/" target="_blank">🔗 LinkedIn</a> |
   <a href="mailto:pearcepackman@gmail.com">📧 Email</a>
