@@ -43,6 +43,7 @@ This project is a combination of a Qt based UI with a C# backend to read data.
 - CorePanel relies on LibreHardwareMonitor to retrieve system metrics. This is an excellent open source library, but sensor data could vary and may not match exactly to the actual values observed
 
 **Update History**
+- 8/6/2025 - Cleaned up code, added lots of comments, changed formatting
 - 7/24/2025 - FIRST RELEASE! Working in standalone folder! All charts added! :)
 - 7/23/2025 - Pulling in data in graphs now, CPU and GPU!!!! Super stoked, made graph class as well
 - 7/22/2025 - HardwareReader.exe CAN read CPU temp! Needed admin permission to launch app :)

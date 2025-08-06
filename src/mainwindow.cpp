@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Executable path is just hardcoded right now, will update this
+    //Using HardwareReader in the directory to open when this app opens, then read the temps/usages
     hardwareReaderProcess = new QProcess(this);
     QString exePath = QCoreApplication::applicationDirPath() + "/HardwareReader.exe";
     if (!QFile::exists(exePath)) {
@@ -44,9 +44,11 @@ MainWindow::MainWindow(QWidget *parent)
             QString line = rawline.trimmed();
             if (line.contains('=')) {
                 qDebug() << "Metric:" << line;
-
+                
+                //Extracting the value of the lines coming from C# program
                 if (line.startsWith("CPU_USAGE=")) {
                     float val = line.section('=', 1).toFloat();
+                    //Update the UI to set the text and add data points
                     ui->cpuUsageOutput->setText(QString::number(val, 'f', 1) + "%");
                     cpuUsageChartWidget->addDataPoint(val);
                 }
@@ -92,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 //--------------------------------- CPU USAGE LAYOUT ---------------------------------//
-
+    //Adding widget to chart UI chart 
     cpuUsageChartWidget = new chartWidget(this, "%", 100);
     QVBoxLayout *cpuLayout = new QVBoxLayout(ui->cpuUsageChart);
     cpuLayout->addWidget(cpuUsageChartWidget);
@@ -157,7 +159,8 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow()
-{
+{   
+    //Deconstructor, will kill HardwareReader in the background when app closes
     if (hardwareReaderProcess && hardwareReaderProcess->state() != QProcess::NotRunning) {
         hardwareReaderProcess->terminate(); // Send gentle close signal
         if (!hardwareReaderProcess->waitForFinished(1000)) {
